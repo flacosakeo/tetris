@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tetris Clásico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header-top">
+            <h1>TETRIS</h1>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider"></div>
+                </label>
+                <span id="theme-label">🌙</span>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <canvas id="tetris" width="300" height="600"></canvas>
+            <div class="sidebar">
+                <div class="panel next-panel">
+                    <h3>Siguiente</h3>
+                    <canvas id="next" width="120" height="120"></canvas>
+                </div>
+                <div class="panel">
+                    <h3>Nivel</h3>
+                    <span id="level">1</span>
+                    <small id="level-name">Cyberpunk</small>
+                </div>
+                <div class="panel">
+                    <h3>Puntuación</h3>
+                    <span id="score">0</span>
+                </div>
+                <div class="panel">
+                    <h3>Líneas</h3>
+                    <span id="lines">0</span>
+                </div>
+                <div class="controls-info">
+                    <h3>Controles</h3>
+                    <p><b>A/D / ◄/►</b> : Mover</p>
+                    <p><b>S / ▼</b> : Bajar rápido</p>
+                    <p><b>W / ▲</b> : Rotar</p>
+                    <p><b>Espacio</b> : Caída libre</p>
+                    <p><b>P</b> : Pausa</p>
+                </div>
+                <div class="btn-group">
+                    <button id="pause-btn" class="action-btn" disabled>Pausar</button>
+                    <button id="start-btn" class="action-btn">Iniciar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles táctiles para dispositivos móviles / pantallas táctiles -->
+        <div class="touch-controls" id="touch-controls">
+            <div class="touch-group">
+                <button class="touch-btn" id="btn-left" aria-label="Mover a la izquierda" title="Mover izquierda">◀</button>
+                <button class="touch-btn" id="btn-down" aria-label="Bajar rápido" title="Bajar">▼</button>
+                <button class="touch-btn" id="btn-right" aria-label="Mover a la derecha" title="Mover derecha">▶</button>
+            </div>
+            <div class="touch-group">
+                <button class="touch-btn touch-btn-action" id="btn-rotate" aria-label="Rotar pieza" title="Rotar">🔄</button>
+                <button class="touch-btn touch-btn-drop" id="btn-drop" aria-label="Caída libre" title="Caída libre">⚡</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

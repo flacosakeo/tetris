@@ -1,0 +1,535 @@
+:root {
+    --bg-gradient: radial-gradient(circle at center, #1b0c3d 0%, #080314 100%);
+    --container-bg: rgba(20, 10, 40, 0.85);
+    --container-border: rgba(0, 243, 255, 0.3);
+    --container-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    --text-color: #fff;
+    --title-color: #00f3ff;
+    --canvas-bg: #080310;
+    --canvas-border: #00f3ff;
+    --panel-bg: rgba(30, 15, 60, 0.7);
+    --panel-border: rgba(255, 0, 85, 0.3);
+    --panel-text: #00f3ff;
+    --panel-title: #ff0055;
+    --grid-color: rgba(0, 243, 255, 0.04);
+    --btn-bg: linear-gradient(135deg, #00f3ff, #0066ff);
+    --btn-color: #080310;
+    --btn-hover-bg: linear-gradient(135deg, #ff0055, #ff00aa);
+    --btn-hover-color: #fff;
+    --pause-bg: linear-gradient(135deg, #ff9900, #ffcc00);
+}
+
+body.light-mode {
+    --bg-gradient: radial-gradient(circle at center, #e0e6ed 0%, #cbd5e1 100%);
+    --container-bg: rgba(255, 255, 255, 0.9);
+    --container-border: rgba(0, 102, 255, 0.3);
+    --container-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --text-color: #1e293b;
+    --title-color: #0284c7;
+    --canvas-bg: #f8fafc;
+    --canvas-border: #cbd5e1;
+    --panel-bg: rgba(241, 245, 249, 0.9);
+    --panel-border: rgba(0, 102, 255, 0.2);
+    --panel-text: #0284c7;
+    --panel-title: #0f172a;
+    --grid-color: rgba(0, 0, 0, 0.06);
+    --btn-bg: linear-gradient(135deg, #0ea5e9, #0284c7);
+    --btn-color: #fff;
+    --btn-hover-bg: linear-gradient(135deg, #f43f5e, #e11d48);
+    --btn-hover-color: #fff;
+    --pause-bg: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 10px;
+    overflow-x: hidden;
+}
+
+.game-container {
+    text-align: center;
+    background: var(--container-bg);
+    padding: 16px 20px;
+    border-radius: 16px;
+    box-shadow: var(--container-shadow);
+    border: 2px solid var(--container-border);
+    max-width: 100%;
+    width: fit-content;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+h1 {
+    color: var(--title-color);
+    letter-spacing: 4px;
+    font-size: 1.5rem;
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 22px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #334155;
+    transition: 0.4s;
+    border-radius: 22px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #0ea5e9;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+#theme-label {
+    font-size: 1.1rem;
+    user-select: none;
+}
+
+.main-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 100%;
+}
+
+canvas {
+    border: 3px solid var(--canvas-border);
+    background-color: var(--canvas-bg);
+    border-radius: 6px;
+}
+
+#tetris {
+    height: min(68vh, 580px);
+    width: auto;
+    aspect-ratio: 1 / 2;
+    max-width: 100%;
+    display: block;
+    touch-action: none;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 160px;
+    text-align: left;
+}
+
+.panel {
+    background: var(--panel-bg);
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--panel-border);
+    text-align: center;
+}
+
+.panel h3 {
+    font-size: 0.72rem;
+    margin-bottom: 2px;
+    color: var(--panel-title);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.panel span {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--panel-text);
+}
+
+#level-name {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: var(--panel-title);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.next-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#next {
+    background: var(--canvas-bg);
+    border: 2px solid var(--panel-border);
+    border-radius: 4px;
+    margin-top: 3px;
+    width: 90px;
+    height: 90px;
+    display: block;
+}
+
+.controls-info {
+    background: var(--panel-bg);
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--panel-border);
+}
+
+.controls-info h3 {
+    font-size: 0.7rem;
+    margin-bottom: 3px;
+    color: var(--panel-title);
+    text-transform: uppercase;
+}
+
+.controls-info p {
+    font-size: 0.68rem;
+    margin-bottom: 2px;
+    color: var(--text-color);
+    opacity: 0.85;
+}
+
+.btn-group {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    flex: 1;
+    background: var(--btn-bg);
+    color: var(--btn-color);
+    border: none;
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: transform 0.1s ease, filter 0.2s ease;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: var(--btn-hover-bg);
+    color: var(--btn-hover-color);
+}
+
+.action-btn:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+.action-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#pause-btn {
+    background: var(--pause-bg);
+    color: #fff;
+}
+
+/* Controles táctiles en pantalla */
+.touch-controls {
+    display: none;
+    margin-top: 12px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.touch-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.touch-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid var(--panel-border);
+    background: var(--panel-bg);
+    color: var(--panel-text);
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.touch-btn:active {
+    transform: scale(0.92);
+    background: var(--btn-hover-bg);
+    color: var(--btn-hover-color);
+}
+
+.touch-btn-action {
+    background: var(--btn-bg);
+    color: var(--btn-color);
+}
+
+.touch-btn-drop {
+    background: var(--pause-bg);
+    color: #fff;
+}
+
+/* Mostrar controles táctiles en dispositivos táctiles o pantallas pequeñas */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .touch-controls {
+        display: flex;
+    }
+}
+
+/* Ajustes para tabletas y móviles medianos */
+@media (max-width: 600px) {
+    .game-container {
+        padding: 10px 14px;
+    }
+
+    .main-layout {
+        gap: 10px;
+    }
+
+    #tetris {
+        height: min(60vh, 460px);
+    }
+
+    .sidebar {
+        width: 120px;
+        gap: 6px;
+    }
+
+    .panel {
+        padding: 4px 6px;
+    }
+
+    .panel h3 {
+        font-size: 0.65rem;
+    }
+
+    .panel span {
+        font-size: 0.95rem;
+    }
+
+    #next {
+        width: 72px;
+        height: 72px;
+    }
+
+    .controls-info {
+        display: none;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .action-btn {
+        width: 100%;
+        padding: 7px 6px;
+    }
+
+    .touch-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Ajustes para pantallas móviles muy estrechas (ej. 320px - 380px) */
+@media (max-width: 400px) {
+    body {
+        padding: 6px;
+    }
+
+    .game-container {
+        padding: 8px 10px;
+    }
+
+    h1 {
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+    }
+
+    .main-layout {
+        gap: 8px;
+    }
+
+    #tetris {
+        height: min(56vh, 400px);
+    }
+
+    .sidebar {
+        width: 100px;
+        gap: 4px;
+    }
+
+    .panel {
+        padding: 3px 4px;
+    }
+
+    .panel h3 {
+        font-size: 0.6rem;
+    }
+
+    .panel span {
+        font-size: 0.85rem;
+    }
+
+    #next {
+        width: 60px;
+        height: 60px;
+    }
+
+    .action-btn {
+        padding: 6px 4px;
+        font-size: 0.72rem;
+    }
+
+    .touch-controls {
+        margin-top: 8px;
+        gap: 6px;
+    }
+
+    .touch-group {
+        gap: 4px;
+    }
+
+    .touch-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        border-radius: 8px;
+    }
+}
+
+/* Modo horizontal (Landscape) en móviles */
+@media (max-height: 520px) and (orientation: landscape) {
+    body {
+        padding: 4px;
+    }
+
+    .game-container {
+        padding: 6px 12px;
+    }
+
+    .header-top {
+        margin-bottom: 4px;
+    }
+
+    h1 {
+        font-size: 1.1rem;
+    }
+
+    #tetris {
+        height: min(80vh, 320px);
+    }
+
+    .sidebar {
+        width: 120px;
+        gap: 4px;
+    }
+
+    .panel {
+        padding: 2px 6px;
+    }
+
+    #next {
+        width: 50px;
+        height: 50px;
+    }
+
+    .controls-info {
+        display: none;
+    }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 4px;
+        width: 100%;
+    }
+
+    .action-btn {
+        width: 100%;
+        padding: 5px 4px;
+        font-size: 0.72rem;
+    }
+
+    .touch-controls {
+        margin-top: 6px;
+        gap: 6px;
+    }
+
+    .touch-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95rem;
+        border-radius: 8px;
+    }
+}
